@@ -11,10 +11,12 @@ public class FileHandler {
     private String fileName;
 
     public FileHandler(String fileName) {
-        if(fileName.equals(""))
-            this.setFileName(System.getProperty("user.dir") + File.separator + "default-config.txt");
-        else
+        if(fileName == null || fileName.isEmpty()) {
+            System.out.println("File name cannot be null");
+        }
+        else{
             this.setFileName(fileName);
+        }
     }
 
     public Configuration getConfiguration() {
@@ -23,22 +25,26 @@ public class FileHandler {
             Scanner scanner = new Scanner(file);
             Configuration config = new Configuration();
 
-            int i = 1;
-
-            while(scanner.hasNextLine()) {
-                String line = scanner.nextLine().strip();
-                switch (i){
-                    case 1 -> config.setxSize(Integer.parseInt(line));
-                    case 2 -> config.setySize(Integer.parseInt(line));
-                    case 3 -> config.setIterations(Integer.parseInt(line));
-                    case 4 -> config.setLiveCellsCount(Integer.parseInt(line));
-                    default ->
-                        config.addAliveCells(line);
-
+            {
+                int i = 1;
+                int lineCount = 0;
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine().strip();
+                    switch (i) {
+                        case 1 -> config.setySize(Integer.parseInt(line));
+                        case 2 -> config.setxSize(Integer.parseInt(line));
+                        case 3 -> config.setIterations(Integer.parseInt(line));
+                        case 4 -> config.setLiveCellsCount(Integer.parseInt(line));
+                        default -> config.addAliveCells(line);
+                    }
+                    lineCount++;
+                    i++;
                 }
-                i++;
+                if (lineCount < 4) {
+                    throw new InvalidParameterException("Insufficient lines in configuration file.");
+                }
+                return config;
             }
-            return config;
         }catch (IOException e){
             System.out.println("Cannot read given config file with path : " + this.fileName);
         } catch (InvalidParameterException e){

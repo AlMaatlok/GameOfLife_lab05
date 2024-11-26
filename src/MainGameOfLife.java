@@ -8,7 +8,7 @@ public class MainGameOfLife {
     public static void main(String[] args) {
         System.out.println("GAME OF LIFE");
         System.out.println();
-        System.out.println("please provide absolute path to config file or leave blank for the default config: ");
+        System.out.println("please provide absolute path to config file: ");
         Scanner scanner = new Scanner(System.in);
         String path = scanner.nextLine();
 
