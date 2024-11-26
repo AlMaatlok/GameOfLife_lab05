@@ -62,6 +62,17 @@ public class Configuration {
             throw new IllegalArgumentException("Duplicate coordinates: " + line);
         }
         this.aliveCells.add(newCoord);
+        /*Board board = new Board(getySize(), getxSize());
+        board.setCellState(newCoord, true);*/
+    }
+    public ArrayList<Coords> getAliveCells() {
+        return aliveCells;
+    }
+    public void printAliveCells() {
+        getAliveCells();
+        for(Coords c : aliveCells) {
+            System.out.printf(c.getX() + " " + c.getY() + " ");
+        }
     }
 
     private void validatePositiveInt(int value, String argument) {

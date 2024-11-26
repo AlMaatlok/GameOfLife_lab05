@@ -2,13 +2,20 @@ package Models;
 
 public class Board {
     private Cell[][] board;
-    private Coords cords;
+    //private Coords coords;
 
-    public Board(int rows, int cols) {
+    public Board(int rows, int cols, Configuration config) {
         board = new Cell[rows][cols];
         for(int r = 0; r < rows; r++)
-            for(int c = 0; c < cols; c++)
-                board[r][c] = new Cell(false);
+            for(int c = 0; c < cols; c++) {
+                if (config.getAliveCells().contains(new Coords(r, c))){
+                    board[r][c] = new Cell(true);
+                }
+                else{
+                    board[r][c] = new Cell(false);
+                }
+            }
+
     }
 
     public boolean getCellState(Coords coords) {

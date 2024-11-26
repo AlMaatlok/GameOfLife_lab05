@@ -32,7 +32,9 @@ public class FileHandler {
                     case 2 -> config.setySize(Integer.parseInt(line));
                     case 3 -> config.setIterations(Integer.parseInt(line));
                     case 4 -> config.setLiveCellsCount(Integer.parseInt(line));
-                    default -> config.addAliveCells(line);
+                    default ->
+                        config.addAliveCells(line);
+
                 }
                 i++;
             }

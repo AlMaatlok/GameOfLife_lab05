@@ -15,7 +15,7 @@ public class MainGameOfLife {
         FileHandler Fh = new FileHandler(path);
         Configuration config = Fh.getConfiguration();
 
-        Board board = new Board(config.getxSize(), config.getySize());
+        Board board = new Board(config.getxSize(), config.getySize(), config);
         board.printBoard();
     }
 }
