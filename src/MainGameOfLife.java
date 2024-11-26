@@ -1,22 +1,21 @@
+import Logic.FileHandler;
 import Models.Board;
-import Models.Coords;
+import Models.Configuration;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class MainGameOfLife {
     public static void main(String[] args) {
-        Board board = new Board(9, 10);
-        Coords coords = new Coords(0, 0);
-        board.setCellState(coords, true);
-        Coords coords1 = new Coords(1, 0);
-        board.setCellState(coords1, true);
-        Coords coords2 = new Coords(8, 1);
-        board.setCellState(coords2, true);
-        Coords coords3 = new Coords(0, 9);
-        board.setCellState(coords3, true);
-        Coords newCoords = new Coords(1, 9);
-        int count = board.countAllNeighbors(newCoords);
+        System.out.println("GAME OF LIFE");
+        System.out.println();
+        System.out.println("please provide absolute path to config file or leave blank for the default config: ");
+        Scanner scanner = new Scanner(System.in);
+        String path = scanner.nextLine();
+
+        FileHandler Fh = new FileHandler(path);
+        Configuration config = Fh.getConfiguration();
+
+        Board board = new Board(config.getxSize(), config.getySize());
         board.printBoard();
-        System.out.println(count);
     }
 }
