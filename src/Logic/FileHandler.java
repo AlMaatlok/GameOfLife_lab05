@@ -31,8 +31,8 @@ public class FileHandler {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine().strip();
                     switch (i) {
-                        case 1 -> config.setySize(Integer.parseInt(line));
-                        case 2 -> config.setxSize(Integer.parseInt(line));
+                        case 1 -> config.setxSize(Integer.parseInt(line));
+                        case 2 -> config.setySize(Integer.parseInt(line));
                         case 3 -> config.setIterations(Integer.parseInt(line));
                         case 4 -> config.setLiveCellsCount(Integer.parseInt(line));
                         default -> config.addAliveCells(line);

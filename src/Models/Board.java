@@ -19,14 +19,14 @@ public class Board {
     }
 
     public boolean getCellState(Coords coords) {
-        int x = wrap(coords.getX(), board[0].length);
-        int y = wrap(coords.getY(), board.length);
-        return board[y][x].getIsAlive();
+        int x = wrap(coords.getX(), board.length);
+        int y = wrap(coords.getY(), board[0].length);
+        return board[x][y].getIsAlive();
     }
     public void setCellState(Coords coords, boolean state) {
-        int x = wrap(coords.getX(), board[0].length);
-        int y = wrap(coords.getY(), board.length);
-        board[y][x].setIsAlive(state);
+        int x = wrap(coords.getX(), board.length);
+        int y = wrap(coords.getY(), board[0].length);
+        board[x][y].setIsAlive(state);
     }
 
     /*public boolean[][] getBoard() {
@@ -45,14 +45,14 @@ public class Board {
         int count = 0;
         int x = coords.getX();
         int y = coords.getY();
-        int rows = board[0].length;
-        int cols = board.length;
+        int rows = board.length;
+        int cols = board[0].length;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) continue;
                 int newX = (x + i + rows) % rows;
                 int newY = (y + j + cols) % cols;
-                Coords newCoords = new Coords(newY, newX);
+                Coords newCoords = new Coords(newX, newY);
                 if (getCellState(newCoords)) count++;
             }
         }

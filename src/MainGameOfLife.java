@@ -1,6 +1,7 @@
 import Logic.FileHandler;
 import Models.Board;
 import Models.Configuration;
+import Models.Coords;
 
 import java.util.Scanner;
 
@@ -17,5 +18,6 @@ public class MainGameOfLife {
 
         Board board = new Board(config.getxSize(), config.getySize(), config);
         board.printBoard();
+
     }
 }

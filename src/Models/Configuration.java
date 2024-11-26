@@ -58,9 +58,6 @@ public class Configuration {
         if (aliveCells.size() >= liveCellsCount) {
             throw new IllegalArgumentException("Too many initial coordinates.");
         }
-        if(aliveCells.size() < liveCellsCount - 1){
-            throw new IllegalArgumentException("Too few initial coordinates.");
-        }
         if (aliveCells.contains(newCoord)) {
             throw new IllegalArgumentException("Duplicate coordinates: " + line);
         }
