@@ -2,7 +2,6 @@ package Models;
 
 public class Board {
     private Cell[][] board;
-    //private Coords coords;
 
     public Board(int rows, int cols, Configuration config) {
         board = new Cell[rows][cols];
@@ -77,6 +76,7 @@ public class Board {
             }
             System.out.println();
         }
-        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("***********************************************************************");
+        System.out.println();
     }
 }

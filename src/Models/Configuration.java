@@ -1,6 +1,5 @@
 package Models;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 public class Configuration {

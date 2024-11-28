@@ -6,7 +6,6 @@ import Models.Configuration;
 import Models.Coords;
 
 public class LogicHandler {
-    //private Configuration config;
 
     public LogicHandler(){
 
