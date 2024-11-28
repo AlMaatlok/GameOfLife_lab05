@@ -9,10 +9,10 @@ public class Board {
         for(int r = 0; r < rows; r++)
             for(int c = 0; c < cols; c++) {
                 if (config.getAliveCells().contains(new Coords(r, c))){
-                    board[r][c] = new Cell(true);
+                    board[r][c] = new Cell(true, new Coords(r,c));
                 }
                 else{
-                    board[r][c] = new Cell(false);
+                    board[r][c] = new Cell(false, new Coords(r,c));
                 }
             }
 
@@ -59,6 +59,15 @@ public class Board {
         return count;
     }
 
+    public void updateBoard(Board tempBoard) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                boolean newState = tempBoard.getCellState(new Coords(i, j));
+                board[i][j].setIsAlive(newState);
+            }
+        }
+    }
+
     public void printBoard() {
         for(int j = 0; j < board.length; j++){
             for(int i = 0; i < board[j].length; i++) {
@@ -68,5 +77,6 @@ public class Board {
             }
             System.out.println();
         }
+        System.out.println("-----------------------------------------------------------------------");
     }
 }

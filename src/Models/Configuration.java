@@ -36,6 +36,9 @@ public class Configuration {
     public int getySize() {
         return ySize;
     }
+    public int getIterations() {
+        return iterations;
+    }
     public void setIterations(int iterations) {
         validatePositiveInt(iterations, "iterations");
         this.iterations = iterations;

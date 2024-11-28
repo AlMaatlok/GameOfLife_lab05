@@ -1,7 +1,7 @@
 import Logic.FileHandler;
+import Logic.LogicHandler;
 import Models.Board;
 import Models.Configuration;
-import Models.Coords;
 
 import java.util.Scanner;
 
@@ -17,7 +17,8 @@ public class MainGameOfLife {
         Configuration config = Fh.getConfiguration();
 
         Board board = new Board(config.getxSize(), config.getySize(), config);
-        board.printBoard();
+        LogicHandler logic = new LogicHandler();
+        logic.goingThroughIterations(config, board);
 
     }
 }

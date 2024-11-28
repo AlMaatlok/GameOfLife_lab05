@@ -3,15 +3,14 @@ package Models;
 public class Cell {
 
     private boolean isAlive = false;
+    private Coords coords;
 
     public static char aliveCellIcon = '@';
     public static char deadCellIcon = '-';
 
-    public Cell() {
-
-    }
-    public Cell(boolean isAlive){
+    public Cell(boolean isAlive, Coords coords) {
         this.isAlive = isAlive;
+        this.coords = coords;
     }
 
     public boolean getIsAlive(){
@@ -19,6 +18,12 @@ public class Cell {
     }
     public void setIsAlive(boolean isAlive){
         this.isAlive = isAlive;
+    }
+    public Coords getCoords(){
+        return coords;
+    }
+    public void setCoords(Coords coords){
+        this.coords = coords;
     }
     @Override
     public String toString(){
@@ -31,7 +36,7 @@ public class Cell {
         try {
             c = (Cell) super.clone();
         } catch (CloneNotSupportedException e) {
-            c = new Cell(this.getIsAlive());
+            c = new Cell(this.getIsAlive(), this.getCoords());
         }
         return c;
     }
