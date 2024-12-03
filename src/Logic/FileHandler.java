@@ -48,7 +48,7 @@ public class FileHandler {
         }catch (IOException e){
             System.out.println("Cannot read given config file with path : " + this.fileName);
         } catch (InvalidParameterException e){
-            System.out.println("Error occured during parsing config : " + e.getMessage());
+            System.out.println("Error occurred during parsing config : " + e.getMessage());
         }
         return null;
     }

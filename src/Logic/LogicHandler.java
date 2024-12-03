@@ -54,7 +54,7 @@ public class LogicHandler {
         int currentColumn = 0;
         for(int i = 0; i < threatCount; i++) {
             int start = currentColumn;
-            int end = start + columnsPerThread - 1;
+            int end = start + columnsPerThread;
 
             if(remainder > 0) {
                 end++;
@@ -79,7 +79,7 @@ public class LogicHandler {
         for(int i = 0; i < threadCount; i++) {
             int start = partitions[i][0];
             int end = partitions[i][1];
-            int columnCount = end - start + 1;
+            int columnCount = end - start;
 
             System.out.println("tid " + i +": cols " + partitions[i][0] + ":" + partitions[i][1] + " (" + columnCount +  ") rows: 0:" + (rowsCount - 1) + " (" + rowsCount  + ")");
         }

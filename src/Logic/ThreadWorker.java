@@ -11,7 +11,7 @@ public class ThreadWorker implements Runnable {
     private final int start;
     private final int end;
     private final LogicHandler logic;
-    private Board sharedBoard;
+    private final Board sharedBoard;
 
     public ThreadWorker(CyclicBarrier barrier, int start, int end, LogicHandler logic) {
         this.barrier = barrier;
@@ -27,10 +27,10 @@ public class ThreadWorker implements Runnable {
                 Configuration config = logic.getSharedBoard().getConfig();
                 int interations = config.getIterations();
 
-                for (int i = 0; i < interations; i++) {
-                    Board currentBoard = logic.getSharedBoard();
-                    Board tempBoard = new Board(currentBoard.getConfig().getxSize(), currentBoard.getConfig().getySize(), config);
+                Board currentBoard = logic.getSharedBoard();
+                Board tempBoard = new Board(currentBoard.getConfig().getxSize(), currentBoard.getConfig().getySize(), config);
 
+                for (int i = 0; i < interations; i++) {
                     for (int j = start; j < end; j++) {
                         for (int k = 0; k < currentBoard.getConfig().getxSize(); k++) {
                             Coords newCoords = new Coords(j, k);
@@ -41,16 +41,15 @@ public class ThreadWorker implements Runnable {
                             tempBoard.setCellState(newCoords, newState);
                         }
                     }
-                    /*barrier.await();
+                    barrier.await();
                     synchronized (logic) {
                             logic.setSharedBoard(tempBoard);
-                            logic.getSharedBoard().printBoard();
-                    }*/
+                            //logic.getSharedBoard().printBoard();
+                    }
 
-                    barrier.await();
-                    if(logic.isMainThread()){
+                    //barrier.await();
+                    if (barrier.getNumberWaiting() == 0) { // Sprawdzenie, czy wszystkie wątki zakończyły pracę
                         synchronized (logic) {
-                            logic.setSharedBoard(tempBoard);
                             logic.getSharedBoard().printBoard();
                         }
                     }
