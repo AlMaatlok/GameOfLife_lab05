@@ -19,9 +19,8 @@ public class MainGameOfLife {
         FileHandler Fh = new FileHandler(path);
         Configuration config = Fh.getConfiguration();
 
-        Board board = new Board(config.getxSize(), config.getySize(), config);
         LogicHandler logic = new LogicHandler(config);
-        logic.goingThroughIterations(config, board);
+        logic.runThreads(config, numberOfThreads);
         logic.printWorkingThreads(numberOfThreads, config);
 
     }

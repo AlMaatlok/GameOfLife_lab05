@@ -2,8 +2,10 @@ package Models;
 
 public class Board {
     private Cell[][] board;
+    private Configuration config;
 
     public Board(int rows, int cols, Configuration config) {
+        this.config = config;
         board = new Cell[rows][cols];
         for(int r = 0; r < rows; r++)
             for(int c = 0; c < cols; c++) {
@@ -78,5 +80,8 @@ public class Board {
         }
         System.out.println("***********************************************************************");
         System.out.println();
+    }
+    public Configuration getConfig(){
+        return config;
     }
 }

@@ -2,11 +2,13 @@ package Logic;
 
 import Models.Board;
 import Models.Configuration;
-import Models.Coords;
+
+import java.util.concurrent.CyclicBarrier;
 
 public class LogicHandler {
 
     private static Board sharedBoard;
+    boolean isMainThread = true;
 
     public LogicHandler(Configuration config) {
         sharedBoard = new Board(config.getxSize(), config.getySize(), config);
@@ -20,36 +22,25 @@ public class LogicHandler {
         sharedBoard.updateBoard(newBoard);
     }
 
-    public void goingThroughIterations(Configuration config, Board board) {
-        int iterations = config.getIterations();
-        int xSize = config.getxSize();
+    public void runThreads(Configuration config, int threadCount) {
         int ySize = config.getySize();
+        int[][] partitions = partitionsColumn(threadCount, ySize);
 
-        for (int i = 0; i < iterations; i++) {
-            Board tempBoard;
-
-            synchronized (this) {
-                tempBoard = new Board(xSize, ySize, config);
-                Board currentBoard = getSharedBoard();
-
-                for (int j = 0; j < xSize; j++) {
-                    for (int k = 0; k < ySize; k++) {
-                        Coords newCoords = new Coords(j, k);
-                        boolean isAlive = currentBoard.getCellState(newCoords);
-                        int neighbours = currentBoard.countAllNeighbors(newCoords);
-
-                        boolean newState = (isAlive && (neighbours == 2 || neighbours == 3)) || (!isAlive && neighbours == 3);
-                        tempBoard.setCellState(newCoords, newState);
-                    }
-                }
-            }
-
-            synchronized (this) {
-                setSharedBoard(tempBoard);
-            }
-
-            synchronized (this) {
-                sharedBoard.printBoard();
+        CyclicBarrier barrier = new CyclicBarrier(threadCount);
+        Thread[] threads = new Thread[threadCount];
+        for (int i = 0; i < threadCount; i++) {
+            int start = partitions[i][0];
+            int end = partitions[i][1];
+            threads[i] = new Thread(new ThreadWorker(barrier, start, end, this));
+        }
+        for (Thread thread : threads) {
+            thread.start();
+        }
+        for (Thread thread : threads) {
+            try{
+                thread.join();
+            }catch (InterruptedException e){
+                e.printStackTrace();
             }
         }
     }
@@ -92,5 +83,12 @@ public class LogicHandler {
 
             System.out.println("tid " + i +": cols " + partitions[i][0] + ":" + partitions[i][1] + " (" + columnCount +  ") rows: 0:" + (rowsCount - 1) + " (" + rowsCount  + ")");
         }
+    }
+    public boolean isMainThread() {
+        return isMainThread;
+    }
+
+    public void setIsMainThread(boolean isMainThread) {
+        this.isMainThread = isMainThread;
     }
 }
