@@ -89,8 +89,13 @@ public class LogicHandler {
         for(int i = 0; i < threadCount; i++) {
             int start = partitions[i][0];
             int end = partitions[i][1];
-            int columnCount = end - start + 1;
-
+            int columnCount;
+            if(threadCount == 1){
+                columnCount = colsCount;
+            }
+            else {
+                columnCount = end - start + 1;
+            }
             System.out.println("tid " + i +": cols " + partitions[i][0] + ":" + partitions[i][1] + " (" + columnCount +  ") rows: 0:" + (rowsCount - 1) + " (" + rowsCount  + ")");
         }
     }

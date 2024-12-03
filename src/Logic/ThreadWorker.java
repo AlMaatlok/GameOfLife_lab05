@@ -34,7 +34,7 @@ class ThreadWorker implements Runnable {
                 for (int i = 0; i < iterations; i++) {
                     for (int j = start; j < end; j++) {
                         for (int k = 0; k < currentBoard.getConfig().getxSize(); k++) {
-                            Coords newCoords = new Coords(j, k);
+                            Coords newCoords = new Coords(k, j);
                             boolean isAlive = currentBoard.getCellState(newCoords);
                             int neighbours = currentBoard.countAllNeighbors(newCoords);
 
