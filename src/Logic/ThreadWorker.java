@@ -29,7 +29,7 @@ public class ThreadWorker implements Runnable {
 
                 for (int i = 0; i < interations; i++) {
                     Board currentBoard = logic.getSharedBoard();
-                    Board tempBoard = new Board(currentBoard.getConfig().getxSize(), currentBoard.getConfig().getySize());
+                    Board tempBoard = new Board(currentBoard.getConfig().getxSize(), currentBoard.getConfig().getySize(), config);
 
                     for (int j = start; j < end; j++) {
                         for (int k = 0; k < currentBoard.getConfig().getxSize(); k++) {
