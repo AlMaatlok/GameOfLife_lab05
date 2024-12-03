@@ -17,7 +17,7 @@ public class MainGameOfLife {
         Configuration config = Fh.getConfiguration();
 
         Board board = new Board(config.getxSize(), config.getySize(), config);
-        LogicHandler logic = new LogicHandler();
+        LogicHandler logic = new LogicHandler(config);
         logic.goingThroughIterations(config, board);
 
     }
