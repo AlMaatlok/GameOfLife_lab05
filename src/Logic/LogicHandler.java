@@ -53,4 +53,44 @@ public class LogicHandler {
             }
         }
     }
+
+    public int[][] partitionsColumn(int threatCount, int columnCount) {
+        int[][] range = new int[threatCount][2];
+
+        int columnsPerThread = columnCount / threatCount;
+        int remainder = columnCount % threatCount;
+
+        int currentColumn = 0;
+        for(int i = 0; i < threatCount; i++) {
+            int start = currentColumn;
+            int end = start + columnsPerThread - 1;
+
+            if(remainder > 0) {
+                end++;
+                remainder--;
+            }
+
+            range[i][0] = start;
+            range[i][1] = end;
+            currentColumn = end + 1;
+        }
+        return range;
+    }
+    public void printWorkingThreads(int threadCount, Configuration config) {
+
+        int colsCount = config.getySize();
+        int rowsCount = config.getxSize();
+
+        int [][] partitions = partitionsColumn(threadCount, colsCount);
+
+        System.out.println("# " + threadCount + " threads, columns-based partitioning");
+
+        for(int i = 0; i < threadCount; i++) {
+            int start = partitions[i][0];
+            int end = partitions[i][1];
+            int columnCount = end - start + 1;
+
+            System.out.println("tid " + i +": cols " + partitions[i][0] + ":" + partitions[i][1] + " (" + columnCount +  ") rows: 0:" + (rowsCount - 1) + " (" + rowsCount  + ")");
+        }
+    }
 }

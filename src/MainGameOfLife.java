@@ -12,6 +12,9 @@ public class MainGameOfLife {
         System.out.println("please provide absolute path to config file: ");
         Scanner scanner = new Scanner(System.in);
         String path = scanner.nextLine();
+        System.out.println("provide number of threads you want to run: ");
+        Scanner scanner2 = new Scanner(System.in);
+        int numberOfThreads = scanner2.nextInt();
 
         FileHandler Fh = new FileHandler(path);
         Configuration config = Fh.getConfiguration();
@@ -19,6 +22,7 @@ public class MainGameOfLife {
         Board board = new Board(config.getxSize(), config.getySize(), config);
         LogicHandler logic = new LogicHandler(config);
         logic.goingThroughIterations(config, board);
+        logic.printWorkingThreads(numberOfThreads, config);
 
     }
 }
