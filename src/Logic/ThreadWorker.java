@@ -6,20 +6,21 @@ import Models.Coords;
 
 import java.util.concurrent.CyclicBarrier;
 
-public class ThreadWorker implements Runnable {
+class ThreadWorker implements Runnable {
     private final CyclicBarrier barrier;
     private final int start;
     private final int end;
     private final LogicHandler logic;
     private final Board sharedBoard;
 
-    public ThreadWorker(CyclicBarrier barrier, int start, int end, LogicHandler logic) {
+    public ThreadWorker(CyclicBarrier barrier, int start, int end, LogicHandler logic, Configuration config) {
         this.barrier = barrier;
         this.start = start;
         this.end = end;
         this.logic = logic;
         this.sharedBoard = logic.getSharedBoard();
     }
+
 
     @Override
     public void run() {
@@ -48,11 +49,11 @@ public class ThreadWorker implements Runnable {
                     }
 
                     //barrier.await();
-                    if (barrier.getNumberWaiting() == 0) { // Sprawdzenie, czy wszystkie wątki zakończyły pracę
-                        synchronized (logic) {
+                    /*if (barrier.getNumberWaiting() == 0) {
+                        synchronized (logic){
                             logic.getSharedBoard().printBoard();
                         }
-                    }
+                    }*/
                 }
             }catch(Exception e ){
                 e.printStackTrace();
