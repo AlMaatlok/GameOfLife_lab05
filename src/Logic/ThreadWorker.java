@@ -8,10 +8,10 @@ import java.util.concurrent.CyclicBarrier;
 
 class ThreadWorker implements Runnable {
     private final CyclicBarrier barrier;
-    private final int start;
-    private final int end;
-    private final LogicHandler logic;
-    private final Board sharedBoard;
+    private int start;
+    private int end;
+    private LogicHandler logic;
+    private Board sharedBoard;
 
     public ThreadWorker(CyclicBarrier barrier, int start, int end, LogicHandler logic, Configuration config) {
         this.barrier = barrier;
@@ -26,12 +26,12 @@ class ThreadWorker implements Runnable {
     public void run() {
             try {
                 Configuration config = logic.getSharedBoard().getConfig();
-                int interations = config.getIterations();
+                int iterations = config.getIterations();
 
                 Board currentBoard = logic.getSharedBoard();
                 Board tempBoard = new Board(currentBoard.getConfig().getxSize(), currentBoard.getConfig().getySize(), config);
 
-                for (int i = 0; i < interations; i++) {
+                for (int i = 0; i < iterations; i++) {
                     for (int j = start; j < end; j++) {
                         for (int k = 0; k < currentBoard.getConfig().getxSize(); k++) {
                             Coords newCoords = new Coords(j, k);
@@ -47,13 +47,6 @@ class ThreadWorker implements Runnable {
                             logic.setSharedBoard(tempBoard);
                             //logic.getSharedBoard().printBoard();
                     }
-
-                    //barrier.await();
-                    /*if (barrier.getNumberWaiting() == 0) {
-                        synchronized (logic){
-                            logic.getSharedBoard().printBoard();
-                        }
-                    }*/
                 }
             }catch(Exception e ){
                 e.printStackTrace();
