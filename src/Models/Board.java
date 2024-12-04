@@ -29,20 +29,10 @@ public class Board {
         int y = wrap(coords.getY(), board[0].length);
         board[x][y].setIsAlive(state);
     }
-
-    /*public boolean[][] getBoard() {
-        return board;
-    }
-    public void setBoard(boolean[][] board) {
-        this.board = board;
-    }
-    public void copyBoard(Board board) {
-        this.board = board.getBoard();
-    }*/
     private int wrap(int value, int max) {
         return (value + max) % max;
     }
-    public int countAllNeighbors(Coords coords) {
+    public synchronized int countAllNeighbors(Coords coords) {
         int count = 0;
         int x = coords.getX();
         int y = coords.getY();
@@ -83,5 +73,15 @@ public class Board {
     }
     public Configuration getConfig(){
         return config;
+    }
+
+    public synchronized Cell[] getColumn(int columnIndex) {
+        int rows = board.length;
+        Cell[] column = new Cell[rows];
+        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
+            Coords coords = new Coords(rowIndex, columnIndex);
+            column[rowIndex] = new Cell(getCellState(coords), coords);
+        }
+        return column;
     }
 }

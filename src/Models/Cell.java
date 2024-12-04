@@ -13,17 +13,14 @@ public class Cell {
         this.coords = coords;
     }
 
-    public boolean getIsAlive(){
+    public synchronized boolean getIsAlive(){
         return isAlive;
     }
-    public void setIsAlive(boolean isAlive){
+    public synchronized void setIsAlive(boolean isAlive){
         this.isAlive = isAlive;
     }
-    public Coords getCoords(){
+    public synchronized Coords getCoords(){
         return coords;
-    }
-    public void setCoords(Coords coords){
-        this.coords = coords;
     }
     @Override
     public String toString(){

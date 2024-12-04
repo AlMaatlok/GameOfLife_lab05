@@ -7,8 +7,7 @@ import java.util.concurrent.CyclicBarrier;
 
 public class LogicHandler {
 
-    private static Board sharedBoard;
-    boolean isMainThread = true;
+    private Board sharedBoard;
 
     public LogicHandler(Configuration config) {
         sharedBoard = new Board(config.getxSize(), config.getySize(), config);
@@ -36,44 +35,45 @@ public class LogicHandler {
         for (int i = 0; i < threadCount; i++) {
             int start = partitions[i][0];
             int end = partitions[i][1];
-            threads[i] = new Thread(new ThreadWorker(barrier, start, end, this, config));
-        }
-        for (Thread thread : threads) {
-            thread.start();
+            int iterations = config.getIterations();
+            threads[i] = new Thread(new ThreadWorker(barrier, start, end, iterations, this ));
+            threads[i].start();
         }
         for (Thread thread : threads) {
             try{
                 thread.join();
             }catch (InterruptedException e){
-                e.printStackTrace();
+                System.err.println("Thread was interrupted: " + e.getMessage());
+                Thread.currentThread().interrupt();
             }
         }
     }
 
-    public int[][] partitionsColumn(int threatCount, int columnCount) {
-        int[][] range = new int[threatCount][2];
+    public int[][] partitionsColumn(int threadCount, int columnCount) {
+        int[][] range = new int[threadCount][2];
 
-        int columnsPerThread = columnCount / threatCount;
-        int remainder = columnCount % threatCount;
+        int columnsPerThread = columnCount / threadCount;
+        int remainder = columnCount % threadCount;
 
         int currentColumn = 0;
-        for(int i = 0; i < threatCount; i++) {
+        for(int i = 0; i < threadCount; i++) {
             int start = currentColumn;
-            int end;
-            if(threatCount == 1){
-                end = columnCount;
-            }
-            else {
-                end = start + columnsPerThread - 1;
-            }
+            int end = start + columnsPerThread -1;
+
             if(remainder > 0) {
                 end++;
                 remainder--;
             }
 
+            if (end >= columnCount) {
+                end = columnCount - 1;
+            }
             range[i][0] = start;
             range[i][1] = end;
             currentColumn = end + 1;
+
+
+            if (currentColumn >= columnCount) break;
         }
         return range;
     }
@@ -90,20 +90,12 @@ public class LogicHandler {
             int start = partitions[i][0];
             int end = partitions[i][1];
             int columnCount;
-            if(threadCount == 1){
-                columnCount = colsCount;
-            }
-            else {
+            if (start <= end) {
                 columnCount = end - start + 1;
+            } else {
+                columnCount = 0;
             }
-            System.out.println("tid " + i +": cols " + partitions[i][0] + ":" + partitions[i][1] + " (" + columnCount +  ") rows: 0:" + (rowsCount - 1) + " (" + rowsCount  + ")");
+            System.out.println("tid " + i +": cols " + start + ":" + end + " (" + columnCount +  ") rows: 0:" + (rowsCount - 1) + " (" + rowsCount  + ")");
         }
-    }
-    public boolean isMainThread() {
-        return isMainThread;
-    }
-
-    public void setIsMainThread(boolean isMainThread) {
-        this.isMainThread = isMainThread;
     }
 }

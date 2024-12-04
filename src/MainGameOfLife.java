@@ -1,6 +1,5 @@
 import Logic.FileHandler;
 import Logic.LogicHandler;
-import Models.Board;
 import Models.Configuration;
 
 import java.util.Scanner;
@@ -20,8 +19,7 @@ public class MainGameOfLife {
         Configuration config = Fh.getConfiguration();
 
         LogicHandler logic = new LogicHandler(config);
-        logic.runThreads(config, numberOfThreads);
         logic.printWorkingThreads(numberOfThreads, config);
-
+        logic.runThreads(config, numberOfThreads);
     }
 }

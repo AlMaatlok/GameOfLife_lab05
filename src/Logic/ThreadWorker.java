@@ -1,55 +1,61 @@
 package Logic;
 
 import Models.Board;
-import Models.Configuration;
+import Models.Cell;
 import Models.Coords;
 
 import java.util.concurrent.CyclicBarrier;
 
-class ThreadWorker implements Runnable {
+public class ThreadWorker extends Thread {
+
     private final CyclicBarrier barrier;
     private int start;
     private int end;
-    private LogicHandler logic;
-    private Board sharedBoard;
+    private int iterationCount;
 
-    public ThreadWorker(CyclicBarrier barrier, int start, int end, LogicHandler logic, Configuration config) {
+    private final LogicHandler logic;
+
+    public ThreadWorker(CyclicBarrier barrier, int start, int end, int iterationCount, LogicHandler logic) {
         this.barrier = barrier;
         this.start = start;
         this.end = end;
+        this.iterationCount = iterationCount;
         this.logic = logic;
-        this.sharedBoard = logic.getSharedBoard();
     }
 
 
     @Override
     public void run() {
-            try {
-                Configuration config = logic.getSharedBoard().getConfig();
-                int iterations = config.getIterations();
+        for(int i = 0; i < iterationCount; i++) {
 
-                Board currentBoard = logic.getSharedBoard();
-                Board tempBoard = new Board(currentBoard.getConfig().getxSize(), currentBoard.getConfig().getySize(), config);
+            Board tempBoard = new Board(logic.getSharedBoard().getConfig().getxSize(),
+                    logic.getSharedBoard().getConfig().getySize(),
+                    logic.getSharedBoard().getConfig());
+            Cell[][] changedColumns = new Cell[end - start + 1][];
 
-                for (int i = 0; i < iterations; i++) {
-                    for (int j = start; j < end; j++) {
-                        for (int k = 0; k < currentBoard.getConfig().getxSize(); k++) {
-                            Coords newCoords = new Coords(k, j);
-                            boolean isAlive = currentBoard.getCellState(newCoords);
-                            int neighbours = currentBoard.countAllNeighbors(newCoords);
+            for (int j = start; j <= end; j++) {
+                Cell[] column = logic.getSharedBoard().getColumn(j);
+                for (int k = 0; k < column.length; k++) {
+                    Coords newCoords = new Coords(k, j);
+                    boolean isAlive = column[k].getIsAlive();
+                    int neighbours = logic.getSharedBoard().countAllNeighbors(newCoords);
 
-                            boolean newState = (isAlive && (neighbours == 2 || neighbours == 3)) || (!isAlive && neighbours == 3);
-                            tempBoard.setCellState(newCoords, newState);
-                        }
-                    }
-                    barrier.await();
-                    synchronized (logic) {
-                            logic.setSharedBoard(tempBoard);
-                            //logic.getSharedBoard().printBoard();
-                    }
+                    boolean newState = (isAlive && (neighbours == 2 || neighbours == 3)) || (!isAlive && neighbours == 3);
+                    tempBoard.setCellState(newCoords, newState);
+
                 }
-            }catch(Exception e ){
+
+                changedColumns[j - start] = column;
+            }
+            try {
+                barrier.await();
+
+                synchronized (logic) {
+                    logic.setSharedBoard(tempBoard);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+}

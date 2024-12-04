@@ -13,18 +13,11 @@ public class Configuration {
         this.aliveCells = new ArrayList<>();
     }
 
-    public Configuration(int xSize, int ySize, int iterations, int liveCellsCount) {
-        this.setxSize(xSize);
-        this.setySize(ySize);
-        this.setIterations(iterations);
-        this.setLiveCellsCount(liveCellsCount);
-    }
-
-    public void setxSize(int xSize) {
+    public synchronized void setxSize(int xSize) {
         validatePositiveInt(xSize, "xSize");
         this.xSize = xSize;
     }
-    public int getxSize() {
+    public synchronized int getxSize() {
         return xSize;
     }
 
@@ -35,7 +28,7 @@ public class Configuration {
     public int getySize() {
         return ySize;
     }
-    public int getIterations() {
+    public synchronized int getIterations() {
         return iterations;
     }
     public void setIterations(int iterations) {
