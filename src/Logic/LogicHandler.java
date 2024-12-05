@@ -49,7 +49,7 @@ public class LogicHandler {
         }
     }
 
-    protected static int[][] partitionsColumn(int threadCount, int columnCount) {
+    protected int[][] partitionsColumn(int threadCount, int columnCount) {
         int[][] range = new int[threadCount][2];
 
         int columnsPerThread = columnCount / threadCount;

@@ -78,14 +78,4 @@ public class Board {
     public Configuration getConfig(){
         return config;
     }
-
-    public synchronized Cell[] getColumn(int columnIndex) {
-        int rows = board.length;
-        Cell[] column = new Cell[rows];
-        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
-            Coords coords = new Coords(rowIndex, columnIndex);
-            column[rowIndex] = new Cell(getCellState(coords), coords);
-        }
-        return column;
-    }
 }
