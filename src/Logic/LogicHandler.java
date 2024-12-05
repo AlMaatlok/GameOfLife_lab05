@@ -9,18 +9,22 @@ public class LogicHandler {
 
     private Board sharedBoard;
 
+    // Konstruktor: Inicjalizuje LogicHandler z współdzieloną planszą na podstawie podanej konfiguracji
     public LogicHandler(Configuration config) {
         sharedBoard = new Board(config.getxSize(), config.getySize(), config);
     }
 
+    // Synchronizowana metoda pobierająca współdzieloną planszę, zapewniająca bezpieczny dostęp dla wątków
     public synchronized Board getSharedBoard() {
         return sharedBoard;
     }
 
+    // Synchronizowana metoda ustawiająca współdzieloną planszę, zapewniająca bezpieczną aktualizację dla wątków
     public synchronized void setSharedBoard(Board newBoard) {
         this.sharedBoard = new Board(newBoard);
     }
 
+    // Główna metoda uruchamiająca symulację z wykorzystaniem wielu wątków
     public void runThreads(Configuration config, int threadCount) {
         int ySize = config.getySize();
         int[][] partitions = partitionsColumn(threadCount, ySize);
@@ -49,7 +53,8 @@ public class LogicHandler {
         }
     }
 
-    protected static int[][] partitionsColumn(int threadCount, int columnCount) {
+    //metoda pomocnicza do obliczania partycji kolumn dla wątków
+    protected int[][] partitionsColumn(int threadCount, int columnCount) {
         int[][] range = new int[threadCount][2];
 
         int columnsPerThread = columnCount / threadCount;
