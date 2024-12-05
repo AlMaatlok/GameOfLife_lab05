@@ -14,6 +14,7 @@ public class ThreadWorker extends Thread {
 
     private final LogicHandler logic;
 
+    // Konstruktor: Inicjalizuje wątek roboczy z podanymi parametrami
     public ThreadWorker(CyclicBarrier barrier, int start, int end, int iterationCount, LogicHandler logic) {
         this.barrier = barrier;
         this.start = start;
@@ -22,6 +23,7 @@ public class ThreadWorker extends Thread {
         this.logic = logic;
     }
 
+    // Metoda run: Główna logika wątku, wykonuje obliczenia dla przydzielonego fragmentu planszy
     @Override
     public void run() {
         for (int i = 0; i < iterationCount; i++) {
