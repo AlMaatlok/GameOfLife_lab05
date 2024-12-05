@@ -13,11 +13,11 @@ public class LogicHandler {
         sharedBoard = new Board(config.getxSize(), config.getySize(), config);
     }
 
-    public  Board getSharedBoard() {
+    public synchronized Board getSharedBoard() {
         return sharedBoard;
     }
 
-    public  void setSharedBoard(Board newBoard) {
+    public synchronized void setSharedBoard(Board newBoard) {
         this.sharedBoard = new Board(newBoard);
     }
 

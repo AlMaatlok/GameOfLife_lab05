@@ -13,7 +13,6 @@ public class ThreadWorker extends Thread {
     private int iterationCount;
 
     private final LogicHandler logic;
-    //public Board sharedBoard;
 
     public ThreadWorker(CyclicBarrier barrier, int start, int end, int iterationCount, LogicHandler logic) {
         this.barrier = barrier;
@@ -34,6 +33,7 @@ public class ThreadWorker extends Thread {
                     Coords newCoords = new Coords(k, j);
                     boolean isAlive = currentBoard.getCellState(newCoords);
                     int neighbours = currentBoard.countAllNeighbors(newCoords);
+
                     boolean newState = (isAlive && (neighbours == 2 || neighbours == 3)) || (!isAlive && neighbours == 3);
                     tempBoard.setCellState(newCoords, newState);
                 }
