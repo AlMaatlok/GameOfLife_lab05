@@ -4,6 +4,7 @@ public class Board {
     private Cell[][] board;
     private Configuration config;
 
+    // Konstruktor: Tworzy planszę o podanych wymiarach i inicjalizuje ją zgodnie z konfiguracją
     public Board(int rows, int cols, Configuration config) {
         this.config = config;
         board = new Cell[rows][cols];
@@ -18,6 +19,7 @@ public class Board {
             }
 
     }
+    // Konstruktor kopiujący: Tworzy głęboką kopię innej planszy
     public Board(Board other) {
         this.config = other.config;
         this.board = new Cell[other.board.length][other.board[0].length];
@@ -38,6 +40,7 @@ public class Board {
         int y = wrap(coords.getY(), board[0].length);
         board[x][y].setIsAlive(state);
     }
+    // Metoda pomocnicza do zawijania indeksów (zapewnia toroidalną strukturę planszy)
     private static int wrap(int value, int max) {
         return (value + max) % max;
     }
@@ -77,15 +80,5 @@ public class Board {
     }
     public Configuration getConfig(){
         return config;
-    }
-
-    public synchronized Cell[] getColumn(int columnIndex) {
-        int rows = board.length;
-        Cell[] column = new Cell[rows];
-        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
-            Coords coords = new Coords(rowIndex, columnIndex);
-            column[rowIndex] = new Cell(getCellState(coords), coords);
-        }
-        return column;
     }
 }
