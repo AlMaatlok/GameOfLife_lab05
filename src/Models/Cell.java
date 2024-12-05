@@ -17,7 +17,7 @@ public class Cell {
         this.coords = cell.coords;
     }
 
-    public  boolean getIsAlive(){
+    public boolean getIsAlive(){
         return isAlive;
     }
     public void setIsAlive(boolean isAlive){

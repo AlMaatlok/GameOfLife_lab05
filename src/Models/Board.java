@@ -28,12 +28,12 @@ public class Board {
         }
     }
 
-    public boolean getCellState(Coords coords) {
+    public synchronized boolean getCellState(Coords coords) {
         int x = wrap(coords.getX(), board.length);
         int y = wrap(coords.getY(), board[0].length);
         return board[x][y].getIsAlive();
     }
-    public void setCellState(Coords coords, boolean state) {
+    public synchronized void setCellState(Coords coords, boolean state) {
         int x = wrap(coords.getX(), board.length);
         int y = wrap(coords.getY(), board[0].length);
         board[x][y].setIsAlive(state);
@@ -59,9 +59,6 @@ public class Board {
         return count;
     }
 
-    public synchronized void updateBoard(Board tempBoard) {
-        this.board = tempBoard.board;
-    }
 
     public void printBoard() {
         for(int j = 0; j < board.length; j++){
@@ -75,7 +72,7 @@ public class Board {
         System.out.println("***********************************************************************");
         System.out.println();
     }
-    public Configuration getConfig(){
+    public synchronized Configuration getConfig(){
         return config;
     }
 }
