@@ -2,6 +2,13 @@ package Models;
 
 import java.util.ArrayList;
 
+//Klasa Configuration służy do:
+//Przechowywania parametrów symulacji (rozmiary planszy, liczba iteracji, liczba żywych komórek).
+//Zarządzania listą początkowych żywych komórek.
+//Walidacji danych wejściowych.
+//Centralizacji i łatwego zarządzania ustawieniami symulacji.
+//Oddzielenia logiki konfiguracji od logiki symulacji.
+//Dzięki temu klasa ta ułatwia inicjalizację, kontrolę i modyfikację ustawień Gry w Życie, poprawiając strukturę i czytelność całego programu.
 public class Configuration {
     private int xSize;
     private int ySize;
@@ -9,6 +16,7 @@ public class Configuration {
     private int liveCellsCount;
     private ArrayList<Coords> aliveCells;
 
+    // Konstruktor: Inicjalizuje pustą listę żywych komórek
     public Configuration(){
         this.aliveCells = new ArrayList<>();
     }
