@@ -13,11 +13,11 @@ public class Configuration {
         this.aliveCells = new ArrayList<>();
     }
 
-    public synchronized void setxSize(int xSize) {
+    public void setxSize(int xSize) {
         validatePositiveInt(xSize, "xSize");
         this.xSize = xSize;
     }
-    public synchronized int getxSize() {
+    public int getxSize() {
         return xSize;
     }
 
@@ -28,7 +28,7 @@ public class Configuration {
     public int getySize() {
         return ySize;
     }
-    public synchronized int getIterations() {
+    public int getIterations() {
         return iterations;
     }
     public void setIterations(int iterations) {
@@ -61,24 +61,18 @@ public class Configuration {
     public ArrayList<Coords> getAliveCells() {
         return aliveCells;
     }
-    public void printAliveCells() {
-        getAliveCells();
-        for(Coords c : aliveCells) {
-            System.out.printf(c.getX() + " " + c.getY() + " ");
-        }
-    }
 
-    private void validatePositiveInt(int value, String argument) {
+    private static void validatePositiveInt(int value, String argument) {
         if (value <= 0) {
             throw new IllegalArgumentException(argument + " must be positive");
         }
     }
-    private void validateCoords(int value, String argument) {
+    private static void validateCoords(int value, String argument) {
         if (value < 0) {
             throw new IllegalArgumentException(argument + " must be >= 0");
         }
     }
-    public int parseInt(String value, String argument) {
+    private static int parseInt(String value, String argument) {
         try{
             int parsed = Integer.parseInt(value);
             if(argument.equals("Coord")){

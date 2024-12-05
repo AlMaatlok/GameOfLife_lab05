@@ -18,6 +18,15 @@ public class Board {
             }
 
     }
+    public Board(Board other) {
+        this.config = other.config;
+        this.board = new Cell[other.board.length][other.board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                this.board[i][j] = new Cell(other.board[i][j]);
+            }
+        }
+    }
 
     public boolean getCellState(Coords coords) {
         int x = wrap(coords.getX(), board.length);
@@ -29,7 +38,7 @@ public class Board {
         int y = wrap(coords.getY(), board[0].length);
         board[x][y].setIsAlive(state);
     }
-    private int wrap(int value, int max) {
+    private static int wrap(int value, int max) {
         return (value + max) % max;
     }
     public synchronized int countAllNeighbors(Coords coords) {
@@ -50,13 +59,8 @@ public class Board {
         return count;
     }
 
-    public void updateBoard(Board tempBoard) {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                boolean newState = tempBoard.getCellState(new Coords(i, j));
-                board[i][j].setIsAlive(newState);
-            }
-        }
+    public synchronized void updateBoard(Board tempBoard) {
+        this.board = tempBoard.board;
     }
 
     public void printBoard() {

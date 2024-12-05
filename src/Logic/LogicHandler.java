@@ -13,12 +13,12 @@ public class LogicHandler {
         sharedBoard = new Board(config.getxSize(), config.getySize(), config);
     }
 
-    public synchronized Board getSharedBoard() {
+    public  Board getSharedBoard() {
         return sharedBoard;
     }
 
-    public synchronized void setSharedBoard(Board newBoard) {
-        sharedBoard.updateBoard(newBoard);
+    public  void setSharedBoard(Board newBoard) {
+        this.sharedBoard = new Board(newBoard);
     }
 
     public void runThreads(Configuration config, int threadCount) {
@@ -26,8 +26,8 @@ public class LogicHandler {
         int[][] partitions = partitionsColumn(threadCount, ySize);
 
         CyclicBarrier barrier = new CyclicBarrier(threadCount, () -> {
-            synchronized (this) {
-                getSharedBoard().printBoard();
+            synchronized (sharedBoard) {
+                sharedBoard.printBoard();
             }
         });
 
@@ -36,7 +36,7 @@ public class LogicHandler {
             int start = partitions[i][0];
             int end = partitions[i][1];
             int iterations = config.getIterations();
-            threads[i] = new Thread(new ThreadWorker(barrier, start, end, iterations, this ));
+            threads[i] = new Thread(new ThreadWorker(barrier, start, end, iterations, this));
             threads[i].start();
         }
         for (Thread thread : threads) {
@@ -49,7 +49,7 @@ public class LogicHandler {
         }
     }
 
-    public int[][] partitionsColumn(int threadCount, int columnCount) {
+    protected static int[][] partitionsColumn(int threadCount, int columnCount) {
         int[][] range = new int[threadCount][2];
 
         int columnsPerThread = columnCount / threadCount;
@@ -77,6 +77,7 @@ public class LogicHandler {
         }
         return range;
     }
+
     public void printWorkingThreads(int threadCount, Configuration config) {
 
         int colsCount = config.getySize();

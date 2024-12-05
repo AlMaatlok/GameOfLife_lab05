@@ -3,23 +3,27 @@ package Models;
 public class Cell {
 
     private boolean isAlive = false;
-    private Coords coords;
+    private final Coords coords;
 
-    public static char aliveCellIcon = '@';
-    public static char deadCellIcon = '-';
+    public static final char aliveCellIcon = '@';
+    public static final char deadCellIcon = '-';
 
     public Cell(boolean isAlive, Coords coords) {
         this.isAlive = isAlive;
         this.coords = coords;
     }
+    public Cell(Cell cell) {
+        this.isAlive = cell.isAlive;
+        this.coords = cell.coords;
+    }
 
-    public synchronized boolean getIsAlive(){
+    public  boolean getIsAlive(){
         return isAlive;
     }
-    public synchronized void setIsAlive(boolean isAlive){
+    public void setIsAlive(boolean isAlive){
         this.isAlive = isAlive;
     }
-    public synchronized Coords getCoords(){
+    public Coords getCoords(){
         return coords;
     }
     @Override
