@@ -41,7 +41,7 @@ public class Board {
     private static int wrap(int value, int max) {
         return (value + max) % max;
     }
-    public int countAllNeighbors(Coords coords) {
+    public synchronized int countAllNeighbors(Coords coords) {
         int count = 0;
         int x = coords.getX();
         int y = coords.getY();
@@ -59,6 +59,9 @@ public class Board {
         return count;
     }
 
+    public synchronized void updateBoard(Board tempBoard) {
+        this.board = tempBoard.board;
+    }
 
     public void printBoard() {
         for(int j = 0; j < board.length; j++){
@@ -72,7 +75,17 @@ public class Board {
         System.out.println("***********************************************************************");
         System.out.println();
     }
-    public synchronized Configuration getConfig(){
+    public Configuration getConfig(){
         return config;
+    }
+
+    public synchronized Cell[] getColumn(int columnIndex) {
+        int rows = board.length;
+        Cell[] column = new Cell[rows];
+        for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
+            Coords coords = new Coords(rowIndex, columnIndex);
+            column[rowIndex] = new Cell(getCellState(coords), coords);
+        }
+        return column;
     }
 }

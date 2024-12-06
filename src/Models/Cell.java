@@ -8,10 +8,12 @@ public class Cell {
     public static final char aliveCellIcon = '@';
     public static final char deadCellIcon = '-';
 
+    // Konstruktor: Tworzy komórkę o określonym stanie i współrzędnych
     public Cell(boolean isAlive, Coords coords) {
         this.isAlive = isAlive;
         this.coords = coords;
     }
+    // Konstruktor kopiujący: Tworzy kopię innej komórki
     public Cell(Cell cell) {
         this.isAlive = cell.isAlive;
         this.coords = cell.coords;
@@ -26,6 +28,7 @@ public class Cell {
     public Coords getCoords(){
         return coords;
     }
+    // Nadpisana metoda toString: Zwraca symbol reprezentujący stan komórki
     @Override
     public String toString(){
         return (this.isAlive) ? String.valueOf(Cell.aliveCellIcon) : String.valueOf(Cell.deadCellIcon);
