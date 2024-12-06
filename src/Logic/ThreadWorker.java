@@ -5,7 +5,7 @@ import Models.Coords;
 
 import java.util.concurrent.CyclicBarrier;
 
-public class ThreadWorker extends Thread {
+class ThreadWorker implements Runnable {
 
     private final CyclicBarrier barrier;
     private int start;
