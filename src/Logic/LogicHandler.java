@@ -13,43 +13,51 @@ public class LogicHandler {
         sharedBoard = new Board(config.getxSize(), config.getySize(), config);
     }
 
-    public synchronized Board getSharedBoard() {
+    public Board getSharedBoard() {
         return sharedBoard;
     }
 
-    public synchronized void setSharedBoard(Board newBoard) {
+    public void setSharedBoard(Board newBoard) {
         this.sharedBoard = new Board(newBoard);
     }
 
     public void runThreads(Configuration config, int threadCount) {
+
         int ySize = config.getySize();
         int[][] partitions = partitionsColumn(threadCount, ySize);
+        int iterationCount = config.getIterations();
 
-        CyclicBarrier barrier = new CyclicBarrier(threadCount, () -> {
-            synchronized (sharedBoard) {
-                sharedBoard.printBoard();
-            }
-        });
+        for (int k = 0; k < iterationCount; k++) {
 
-        Thread[] threads = new Thread[threadCount];
-        for (int i = 0; i < threadCount; i++) {
-            int start = partitions[i][0];
-            int end = partitions[i][1];
-            int iterations = config.getIterations();
-            threads[i] = new Thread(new ThreadWorker(barrier, start, end, iterations, this));
-            threads[i].start();
-        }
-        for (Thread thread : threads) {
-            try{
-                thread.join();
-            }catch (InterruptedException e){
-                System.err.println("Thread was interrupted: " + e.getMessage());
-                Thread.currentThread().interrupt();
+            Board currentBoard = getSharedBoard();
+            Board tempBoard = new Board(currentBoard);
+
+            CyclicBarrier barrier = new CyclicBarrier(threadCount);
+            sharedBoard.printBoard();
+
+
+            Thread[] threads = new Thread[threadCount];
+            for (int i = 0; i < threadCount; i++) {
+                int start = partitions[i][0];
+                int end = partitions[i][1];
+
+                threads[i] = new Thread(new ThreadWorker(barrier, start, end, currentBoard, tempBoard));
+                threads[i].start();
             }
+            for (Thread thread : threads) {
+                try {
+
+                    thread.join();
+                } catch (InterruptedException e) {
+                    System.err.println("Thread was interrupted: " + e.getMessage());
+                    Thread.currentThread().interrupt();
+                }
+            }
+            setSharedBoard(tempBoard);
         }
     }
 
-    protected static int[][] partitionsColumn(int threadCount, int columnCount) {
+    protected int[][] partitionsColumn(final int threadCount, int columnCount) {
         int[][] range = new int[threadCount][2];
 
         int columnsPerThread = columnCount / threadCount;

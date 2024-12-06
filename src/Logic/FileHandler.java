@@ -10,8 +10,6 @@ import java.util.Scanner;
 public class FileHandler {
     private String fileName;
 
-    // Konstruktor: Inicjalizuje FileHandler z podaną nazwą pliku
-    // Sprawdza, czy nazwa pliku nie jest pusta lub null
     public FileHandler(String fileName) {
         if(fileName == null || fileName.isEmpty()) {
             System.out.println("File name cannot be null");
@@ -21,8 +19,6 @@ public class FileHandler {
         }
     }
 
-    // Metoda wczytująca konfigurację z pliku
-    // Zwraca obiekt Configuration lub null w przypadku błędu
     public Configuration getConfiguration() {
         try{
             File file = new File(this.getFileName());
@@ -47,7 +43,6 @@ public class FileHandler {
                 if (lineCount < 4) {
                     throw new InvalidParameterException("Insufficient lines in configuration file.");
                 }
-                // Wczytuje dane z pliku i ustawia odpowiednie pola w obiekcie Configuration
                 return config;
             }
         }catch (IOException e){
