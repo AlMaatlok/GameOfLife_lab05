@@ -17,7 +17,7 @@ public class Configuration {
         validatePositiveInt(xSize, "xSize");
         this.xSize = xSize;
     }
-    public synchronized int getxSize() {
+    public int getxSize() {
         return xSize;
     }
 

@@ -28,12 +28,12 @@ public class Board {
         }
     }
 
-    public synchronized boolean getCellState(Coords coords) {
+    public boolean getCellState(Coords coords) {
         int x = wrap(coords.getX(), board.length);
         int y = wrap(coords.getY(), board[0].length);
         return board[x][y].getIsAlive();
     }
-    public synchronized void setCellState(Coords coords, boolean state) {
+    public void setCellState(Coords coords, boolean state) {
         int x = wrap(coords.getX(), board.length);
         int y = wrap(coords.getY(), board[0].length);
         board[x][y].setIsAlive(state);
@@ -41,7 +41,7 @@ public class Board {
     private static int wrap(int value, int max) {
         return (value + max) % max;
     }
-    public synchronized int countAllNeighbors(Coords coords) {
+    public int countAllNeighbors(Coords coords) {
         int count = 0;
         int x = coords.getX();
         int y = coords.getY();
